@@ -1,2 +1,6 @@
 github.com/benmcclelland/sgio v0.0.0-20180629175614-f710aebf64c1 h1:f1AIRyf6d21xBd1DirrIa6fk41O3LB0WvVuVqhPN4co=
 github.com/benmcclelland/sgio v0.0.0-20180629175614-f710aebf64c1/go.mod h1:WdrapyVn/Aduwwf/OMW6sEtk9+7BSoMst1kGrx4E4xE=
+github.com/czo/smart.go v0.0.0-20251229114943-b9d5c0832f23 h1:kwz0OCn0nS+hEO+h465o8knsMlI0Z3iz22KAOXvguzs=
+github.com/czo/smart.go v0.0.0-20251229114943-b9d5c0832f23/go.mod h1:sqHGZSeC+0TWr2IZSgY4zXqic8nKv1DGpYAy9h6YauE=
+golang.org/x/sys v0.27.0 h1:wBqf8DvsY9Y/2P8gAfPDEYNuS30J4lPHJxXSb/nJZ+s=
+golang.org/x/sys v0.27.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=

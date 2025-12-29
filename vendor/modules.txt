@@ -1,3 +1,9 @@
 # github.com/benmcclelland/sgio v0.0.0-20180629175614-f710aebf64c1
 ## explicit
 github.com/benmcclelland/sgio
+# github.com/czo/smart.go v0.0.0-20251229114943-b9d5c0832f23
+## explicit; go 1.22
+github.com/czo/smart.go
+# golang.org/x/sys v0.27.0
+## explicit; go 1.18
+golang.org/x/sys/unix

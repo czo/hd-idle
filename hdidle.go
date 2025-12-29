@@ -21,6 +21,7 @@ import (
 	"github.com/adelolmo/hd-idle/diskstats"
 	"github.com/adelolmo/hd-idle/io"
 	"github.com/adelolmo/hd-idle/sgio"
+	"github.com/czo/smart.go"
 	"log"
 	"math"
 	"os"
@@ -244,6 +245,16 @@ func spindownDisk(device, command string, powerCondition uint8, debug bool) erro
 		}
 		return nil
 	case ATA:
+		smartdev, smarterr := smart.OpenSata(device)
+		if ( smarterr == nil ) {
+			defer smartdev.Close()
+			smartpage, smarterr := smartdev.ReadSMARTData()
+			if ( smarterr == nil ) {
+				if ( smartpage.SelfTestExecStatus>>4 == 15 ) {
+					return fmt.Errorf("S.M.A.R.T. self test routine in progress on ata disk %s\n", device )
+				}
+			}
+		}
 		if err := sgio.StopAtaDevice(device, debug); err != nil {
 			return fmt.Errorf("cannot spindown ata disk %s:\n%s\n", device, err.Error())
 		}
