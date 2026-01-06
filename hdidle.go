@@ -245,13 +245,16 @@ func spindownDisk(device, command string, powerCondition uint8, debug bool) erro
 		}
 		return nil
 	case ATA:
-		smartdev, smarterr := smart.OpenSata(device)
-		if ( smarterr == nil ) {
-			defer smartdev.Close()
-			smartpage, smarterr := smartdev.ReadSMARTData()
+		state, _ := sgio.GetAtaDeviceIsRunning( device, debug )
+		if ( state ) {
+			smartdev, smarterr := smart.OpenSata(device)
 			if ( smarterr == nil ) {
-				if ( smartpage.SelfTestExecStatus>>4 == 15 ) {
-					return fmt.Errorf("S.M.A.R.T. self test routine in progress on ata disk %s\n", device )
+				defer smartdev.Close()
+				smartpage, smarterr := smartdev.ReadSMARTData()
+				if ( smarterr == nil ) {
+					if ( smartpage.SelfTestExecStatus>>4 == 15 ) {
+						return fmt.Errorf("S.M.A.R.T. self test routine in progress on ata disk %s\n", device )
+					}
 				}
 			}
 		}

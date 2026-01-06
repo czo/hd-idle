@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/benmcclelland/sgio"
 	"os"
+	"unsafe"
 )
 
 const (
@@ -31,6 +32,9 @@ const (
 
 	ataOpStandbyNow1 = 0xe0 // https://wiki.osdev.org/ATA/ATAPI_Power_Management
 	ataOpStandbyNow2 = 0x94 // Retired in ATA4. Did not coexist with ATAPI.
+	
+	HDIO_DRIVE_CMD = 0x031f
+	ATA_CMD_CHK_POWER = 0xe5
 )
 
 func StopAtaDevice(device string, debug bool) error {
@@ -66,6 +70,23 @@ func StopAtaDevice(device string, debug bool) error {
 		return fmt.Errorf("cannot close file %s. Error: %s", device, err)
 	}
 	return nil
+}
+
+func GetAtaDeviceIsRunning( device string, debug bool ) ( bool, error ) {
+	f, err := openDevice(device)
+	if err != nil {
+		return true, err
+	}
+	defer f.Close()
+	args := [4]byte{ATA_CMD_CHK_POWER, 0, 0, 0}
+	err = ioctl(f.Fd(), HDIO_DRIVE_CMD, uintptr(unsafe.Pointer(&args[0])) )
+	if ( err != nil ) {
+		return true, err
+	}
+	if args[2] == 0xff {
+		return true, nil
+	}
+	return false, nil
 }
 
 func jmicronGetRegisters() []uint8 {
